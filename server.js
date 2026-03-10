@@ -322,7 +322,9 @@ app.post("/api/verify-customer", async (req, res) => {
 /* -------------------- Main API: get price by phone + product + packetSize -------------------- */
 app.post("/api/get-price", async (req, res) => {
   try {
-    const { phone, product, packetSize } = req.body;
+    const phone = req.body.phone || req.query.phone;
+    const product = req.body.product || req.query.product;
+    const packetSize = req.body.packetSize || req.query.packetSize;
 
     if (!phone || !product || !packetSize) {
       return res.status(400).json({
