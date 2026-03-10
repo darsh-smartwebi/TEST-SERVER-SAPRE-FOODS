@@ -330,6 +330,7 @@ app.post("/api/get-price", async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "phone, product and packetSize are required",
+        answerText: "Phone number, product, and packet size are required.",
       });
     }
 
@@ -343,8 +344,7 @@ app.post("/api/get-price", async (req, res) => {
         success: false,
         verified: false,
         message: "Customer not found",
-        spokenResponse:
-          "I could not find your customer account with that mobile number.",
+        answerText: "I could not verify your mobile number.",
       });
     }
 
@@ -367,7 +367,7 @@ app.post("/api/get-price", async (req, res) => {
         price: exactMatch.price,
         currency: exactMatch.currency,
         message: "Price fetched successfully",
-        spokenResponse: `The price of ${exactMatch.product} ${exactMatch.packetSize} is ${exactMatch.price} rupees.`,
+        answerText: `The price of ${exactMatch.product} ${exactMatch.packetSize} is ${exactMatch.price} rupees.`,
       });
     }
 
@@ -389,7 +389,7 @@ app.post("/api/get-price", async (req, res) => {
         customerId: customer._id,
         customerName: customer.customerName,
         message: "Price not found for requested product and packet size",
-        spokenResponse:
+        answerText:
           "I could not find the price for that product and packet size.",
       });
     }
@@ -405,7 +405,7 @@ app.post("/api/get-price", async (req, res) => {
       price: matched.price,
       currency: matched.currency,
       message: "Price fetched successfully",
-      spokenResponse: `The price of ${matched.product} ${matched.packetSize} is ${matched.price} rupees.`,
+      answerText: `The price of ${matched.product} ${matched.packetSize} is ${matched.price} rupees.`,
     });
   } catch (err) {
     console.error(err);
@@ -413,8 +413,7 @@ app.post("/api/get-price", async (req, res) => {
       success: false,
       message: "Server error",
       error: err.message,
-      spokenResponse:
-        "There was a server issue while checking the price. Please try again.",
+      answerText: "There was a server issue while checking the price.",
     });
   }
 });
