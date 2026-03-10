@@ -343,6 +343,8 @@ app.post("/api/get-price", async (req, res) => {
         success: false,
         verified: false,
         message: "Customer not found",
+        spokenResponse:
+          "I could not find your customer account with that mobile number.",
       });
     }
 
@@ -365,6 +367,7 @@ app.post("/api/get-price", async (req, res) => {
         price: exactMatch.price,
         currency: exactMatch.currency,
         message: "Price fetched successfully",
+        spokenResponse: `The price of ${exactMatch.product} ${exactMatch.packetSize} is ${exactMatch.price} rupees.`,
       });
     }
 
@@ -386,6 +389,8 @@ app.post("/api/get-price", async (req, res) => {
         customerId: customer._id,
         customerName: customer.customerName,
         message: "Price not found for requested product and packet size",
+        spokenResponse:
+          "I could not find the price for that product and packet size.",
       });
     }
 
@@ -400,6 +405,7 @@ app.post("/api/get-price", async (req, res) => {
       price: matched.price,
       currency: matched.currency,
       message: "Price fetched successfully",
+      spokenResponse: `The price of ${matched.product} ${matched.packetSize} is ${matched.price} rupees.`,
     });
   } catch (err) {
     console.error(err);
@@ -407,6 +413,8 @@ app.post("/api/get-price", async (req, res) => {
       success: false,
       message: "Server error",
       error: err.message,
+      spokenResponse:
+        "There was a server issue while checking the price. Please try again.",
     });
   }
 });
