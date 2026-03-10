@@ -282,7 +282,7 @@ app.post("/api/prices", async (req, res) => {
 /* -------------------- Verify customer by phone -------------------- */
 app.post("/api/verify-customer", async (req, res) => {
   try {
-    const { phone } = req.body;
+    const phone = req.body.phone || req.query.phone;
 
     if (!phone) {
       return res.status(400).json({
@@ -312,7 +312,6 @@ app.post("/api/verify-customer", async (req, res) => {
       message: "Customer verified successfully",
     });
   } catch (err) {
-    console.error(err);
     res.status(500).json({
       verified: false,
       message: "Server error",
@@ -320,7 +319,6 @@ app.post("/api/verify-customer", async (req, res) => {
     });
   }
 });
-
 /* -------------------- Main API: get price by phone + product + packetSize -------------------- */
 app.post("/api/get-price", async (req, res) => {
   try {
