@@ -320,7 +320,7 @@ app.post("/api/verify-customer", async (req, res) => {
   }
 });
 /* -------------------- Main API: get price by phone + product + packetSize -------------------- */
-app.post("/api/get-price", async (req, res) => {
+app.post("/api/check-price", async (req, res) => {
   try {
     const phone = req.body.phone || req.query.phone;
     const product = req.body.product || req.query.product;
@@ -329,7 +329,6 @@ app.post("/api/get-price", async (req, res) => {
     if (!phone || !product || !packetSize) {
       return res.status(400).json({
         success: false,
-        message: "phone, product and packetSize are required",
         answerText: "Phone number, product, and packet size are required.",
       });
     }
@@ -343,8 +342,7 @@ app.post("/api/get-price", async (req, res) => {
       return res.json({
         success: false,
         verified: false,
-        message: "Customer not found",
-        answerText: "I could not verify your mobile number.",
+        answerText: "I could not verify your registered mobile number.",
       });
     }
 
@@ -359,14 +357,6 @@ app.post("/api/get-price", async (req, res) => {
       return res.json({
         success: true,
         verified: true,
-        customerId: customer._id,
-        customerName: customer.customerName,
-        phone: customer.phone,
-        product: exactMatch.product,
-        packetSize: exactMatch.packetSize,
-        price: exactMatch.price,
-        currency: exactMatch.currency,
-        message: "Price fetched successfully",
         answerText: `The price of ${exactMatch.product} ${exactMatch.packetSize} is ${exactMatch.price} rupees.`,
       });
     }
@@ -386,9 +376,6 @@ app.post("/api/get-price", async (req, res) => {
       return res.json({
         success: false,
         verified: true,
-        customerId: customer._id,
-        customerName: customer.customerName,
-        message: "Price not found for requested product and packet size",
         answerText:
           "I could not find the price for that product and packet size.",
       });
@@ -397,22 +384,12 @@ app.post("/api/get-price", async (req, res) => {
     return res.json({
       success: true,
       verified: true,
-      customerId: customer._id,
-      customerName: customer.customerName,
-      phone: customer.phone,
-      product: matched.product,
-      packetSize: matched.packetSize,
-      price: matched.price,
-      currency: matched.currency,
-      message: "Price fetched successfully",
       answerText: `The price of ${matched.product} ${matched.packetSize} is ${matched.price} rupees.`,
     });
   } catch (err) {
     console.error(err);
     return res.status(500).json({
       success: false,
-      message: "Server error",
-      error: err.message,
       answerText: "There was a server issue while checking the price.",
     });
   }
