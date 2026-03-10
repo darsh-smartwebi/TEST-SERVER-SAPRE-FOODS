@@ -339,7 +339,7 @@ app.post("/api/get-price", async (req, res) => {
     }).lean();
 
     if (!customer) {
-      return res.status(404).json({
+      return res.json({
         success: false,
         verified: false,
         message: "Customer not found",
@@ -380,7 +380,7 @@ app.post("/api/get-price", async (req, res) => {
     );
 
     if (!matched) {
-      return res.status(404).json({
+      return res.json({
         success: false,
         verified: true,
         customerId: customer._id,
@@ -403,7 +403,7 @@ app.post("/api/get-price", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server error",
       error: err.message,
